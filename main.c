@@ -158,18 +158,9 @@ int dcode1(AVFormatContext *inputContext)
                                               vCodecCtx->width,
                                               vCodecCtx->height);
 
-    SDL_Event event;
     // Read frames from the file
     while (av_read_frame(inputContext, packet) >= 0)
-    {
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_EVENT_QUIT) {
-                // Exit decoding early
-                av_packet_unref(packet);
-                goto cleanup;
-            }
-        }
-
+    {       
         if (packet->stream_index == stream_i) {
             int send = avcodec_send_packet(vCodecCtx, packet);
 
@@ -228,14 +219,14 @@ int dcode1(AVFormatContext *inputContext)
         av_packet_unref(packet);
     }
 
-    cleanup:
-     av_packet_free(&packet);
-     avcodec_free_context(&vCodecCtx);
-     avformat_close_input(&inputContext);
-     av_frame_free(&frame);
-     SDL_DestroyTexture(texture);
-     SDL_DestroyRenderer(renderer);
-     SDL_DestroyWindow(window);
+   
+    av_packet_free(&packet);
+    avcodec_free_context(&vCodecCtx);
+    avformat_close_input(&inputContext);
+    av_frame_free(&frame);
+    SDL_DestroyTexture(texture);
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
 
     return 0;
 }
