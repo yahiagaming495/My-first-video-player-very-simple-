@@ -3,8 +3,6 @@
 #include <libavformat/avformat.h>
 #include <libavcodec/avcodec.h>
 #include <libavutil/avutil.h>
-//#include <libavutil/imgutils.h>
-//#include <libswscale/swscale.h>
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
@@ -95,41 +93,6 @@ int dcode1(AVFormatContext *inputContext)
         return 1;
     }
 
-    /*AVFrame *rgb = av_frame_alloc();
-    if (!rgb)
-    {
-        fprintf(stderr, "Could not allocate RGB AVFrame\n");
-        av_frame_free(&frame);
-        av_packet_free(&packet);
-        avcodec_free_context(&vCodecCtx);
-        return 1;
-    }
-
-    struct SwsContext *swsWctx = sws_getContext(
-                    vCodecCtx->width,
-                    vCodecCtx->height,
-                    vCodecCtx->pix_fmt,
-                    vCodecCtx->width,
-                    vCodecCtx->height,
-                    AV_PIX_FMT_RGB24,
-                    SWS_BILINEAR,
-                    NULL,
-                    NULL,
-                           NULL
-                    );
-
-    if (swsWctx == NULL) {
-        printf("Could not allocate the SWS context\n");
-        av_frame_free(&frame);
-        av_packet_free(&packet);
-        avcodec_free_context(&vCodecCtx);
-    }
-
-    int numBytes = av_image_get_buffer_size(AV_PIX_FMT_RGB24, vCodecCtx->width, vCodecCtx->height, 1);
-    uint8_t *buffer = (uint8_t *)av_malloc(numBytes * sizeof(uint8_t));
-    av_image_fill_arrays(rgb->data, rgb->linesize, buffer, AV_PIX_FMT_RGB24, vCodecCtx->width, vCodecCtx->height, 1);
-    */
-
     // sdl
 
     if (!SDL_Init(SDL_INIT_VIDEO))
@@ -186,15 +149,6 @@ int dcode1(AVFormatContext *inputContext)
                 }
 
                 if (receive == 0) {
-                    /*sws_scale(
-                             swsWctx,
-                             (const uint8_t *const *) frame->data,
-                             frame->linesize, 0,
-                     vCodecCtx->height,
-                             rgb->data,
-                     rgb->linesize
-                    );*/
-
                     // rendering
                     SDL_UpdateYUVTexture(texture, NULL,
                         frame->data[0], frame->linesize[0],
@@ -230,59 +184,3 @@ int dcode1(AVFormatContext *inputContext)
 
     return 0;
 }
-
-
-
-
-
-
-/*int stream(AVFormatContext *inputContext, const char *filename)
-{
-    // Retrieve stream information
-    int deepS = avformat_find_stream_info(inputContext, NULL);
-
-    if (deepS < 0)
-    {
-        fprintf(stderr, "Could not find stream information in file '%s'\n", filename);
-        avformat_close_input(&inputContext);
-        return 1;
-    }
-
-    for (int i = 0; i < inputContext->nb_streams; i++)
-    {
-        AVStream *stream = inputContext->streams[i];
-        AVCodecParameters *codecpar = stream->codecpar;
-
-        if (codecpar->codec_type == AVMEDIA_TYPE_VIDEO)
-        {
-            printf("Stream %d, Resolution: %dx%d, Codec ID: %d\n",
-                   i, codecpar->width, codecpar->height, codecpar->codec_id);
-        }
-        else if (codecpar->codec_type == AVMEDIA_TYPE_AUDIO)
-        {
-            printf("Stream %d AUDIO, Codec ID: %d\n",
-                   i, codecpar->codec_id);
-        }
-    }
-
-    return 1;
-}
-
-
-int av_find_best_S(AVFormatContext *inputContext)
-{
-    const AVCodec *codec = NULL;
-    int stream_i = -1;
-
-    stream_i = av_find_best_stream(inputContext, AVMEDIA_TYPE_VIDEO, -1, -1, &codec, 0);
-
-    if (stream_i < 0)
-    {
-        fprintf(stderr, "Could not find a video stream in the input file\n");
-    }
-
-    printf("Video stream index: %d, Codec name: %s\n", stream_i, codec->name);
-
-    return 0;
-}
-*/
