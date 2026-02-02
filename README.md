@@ -1,11 +1,11 @@
 Libraries used:
 
-SDL3:
+FFmpeg:
 #include <libavformat/avformat.h>,
 #include <libavcodec/avcodec.h>,
 #include <libavutil/avutil.h>
 
-FFmpeg:
+SDL3:
 #include <SDL3/SDL.h>,
 #include <SDL3/SDL_main.h>
 
