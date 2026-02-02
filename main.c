@@ -123,6 +123,7 @@ int videoDcode(AVFormatContext *inputContext)
 
     avcodec_free_context(&vCodecCtx);
     avformat_free_context(inputContext);
+    avcodec_free_context(&audio);
     return 0;
 
     error:
