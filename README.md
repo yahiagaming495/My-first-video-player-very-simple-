@@ -1,4 +1,5 @@
 Libraries used:
+#include <stdio.h>
 
 SDL3:
 #include <SDL3/SDL.h>,
@@ -7,7 +8,8 @@ SDL3:
 FFmpeg:
 #include <libavformat/avformat.h>,
 #include <libavcodec/avcodec.h>,
-#include <libavutil/avutil.h>
+#include <libavutil/avutil.h>,
+#include <libswresample/swresample.h>
 
 The thing i couldn't do:
 I couldn't convert YUV to RGB24 using #include <libswscale/swscale.h> libraries function.
